@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<meta charset="utf-8">
+<head>
+</head>
+<body>
+<p></p>
+
+<script>
+    // Вводим длину матрицы и генерируем элементы случайно от -49 до 50
+    let len_matrix_D = +prompt("Введите длину матрицы D(M,N), целым числом");
+    if (isNaN(len_matrix_D) || len_matrix_D < 0) {
+        alert("Недопустимое значение!");
+    } else {
+        let matrix_D = [] ;
+        for (let i = 0; i < 2; i++) {
+            matrix_D[i] = [];
+            while (matrix_D[i].length < len_matrix_D) {
+                let num = Math.floor(Math.random() * 100)-50;
+                matrix_D[i].push(num);
+            }
+        }
+        let matrix_EE = JSON.parse(JSON.stringify(matrix_D));       // создаем новый массив matrix_EE
+        let Rows = matrix_D.length;
+        let Cols = len_matrix_D;
+
+        for (let i = 0; i < Rows; i++) {
+            for (let j = 0; j < Cols; j++) {
+                let H = matrix_EE[i][j]
+                if (matrix_EE[i][j] === 2) {
+                    matrix_EE[i][j] = -4;
+                } else if (matrix_EE[i][j] === -4) {
+                    matrix_EE[i][j] = 3;
+                } else if (Math.abs(H) > 5) {
+                    matrix_EE[i][j] = 0;
+                }
+            }
+        }
+
+        for (let k = 0 ; k < matrix_EE[1].length; k++) {            // сортируем массив бинарным способом по убыванию
+            let X = matrix_EE[0][k], d = k-1;
+            let Y = matrix_EE[1][k], c = k-1;
+            while (d >= 0 && matrix_EE[0][d] < X)  {
+                matrix_EE[0][d+1] = matrix_EE[0][d];
+                d--;
+            }
+            while (c >= 0 && matrix_EE[1][c] < Y)  {
+                matrix_EE[1][c+1] = matrix_EE[1][c];
+                c--;
+            }
+            matrix_EE[0][d+1] = X;
+            matrix_EE[1][c+1] = Y;
+        }
+        let matrix_F = JSON.parse(JSON.stringify(matrix_EE));  // создаем новый массив matrix_F
+
+        for (let i = 0; i < Rows; i++) {                        // сложение матриц
+            for (let j = 0; j < Cols; j++) {
+                matrix_F [i][j] = matrix_EE[i][j] + matrix_D[i][j];
+            }
+        }
+        // вывод сделан через функцию;
+        function printMatrix (matrix) {
+
+            document.write("<br>"+ "[" + matrix[0] +"] " + "<br>");
+            document.write("[" + matrix[1] +"] " + "<br>");
+        }
+        // Название матрицы можно тоже внести в функцию, но тогда нужно прописывать дополнительно условие
+        document.write("Матрица D");
+        printMatrix (matrix_D);
+        document.write("Матрица EE");
+        printMatrix (matrix_EE);
+        document.write("Матрица F");
+        printMatrix (matrix_F);
+
+
+    }
+</script>
+</body>
+</html>
